@@ -37,8 +37,8 @@ console.log(weekdaysResult[lang]);
 // Решить задачу с помощью нескольких тернарных операторов, без использования if или switch
 let namePerson = 'Женя';
 
-let message = (namePerson === 'Артем') ? 'директор' :
-  (namePerson === 'Максим') ? 'преподаватель' :
+let message = namePerson === 'Артем' ? 'директор' :
+  namePerson === 'Максим' ? 'преподаватель' :
   'студент';
 
 console.log(message);
