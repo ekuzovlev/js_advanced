@@ -1,7 +1,5 @@
 'use strict';
 
-// 1) Выведите на страницу текущую дату и время в 2-х форматах:
-// a) 'Сегодня Вторник, 4 февраля 2020 года, 21 час 5 минут 33 секунды'
 function incline (quantity, one, two, five) {
   if ((quantity % 100) >= 11 && (quantity % 100) <= 14) {
     return five;
@@ -16,12 +14,16 @@ function incline (quantity, one, two, five) {
   }
 }
 
-let date = new Date();
+let getTime = function() {
+  let date = new Date();
+  return date;
+};
 
-let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+let getDate = function(date){
+  let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
-let dateItems = date.toLocaleDateString('ru-RU', options).split(', ');
-// ["понедельник", " 9 августа 2021 г."]
+  return date.toLocaleDateString('ru-RU', options).split(', '); // ["понедельник", " 9 августа 2021 г."]
+};
 
 // Получаем день недели с большой буквы
 let normalizeWeekday = function(dateItems){
@@ -35,41 +37,43 @@ let normalizeYear = function(dateItems){
   return year.replace('г.', 'года');
 };
 
-let normalizeHours = function(date) {
-  let hour = date.getHours();
+let normalizeHours = function(time) {
+  let hour = time.getHours();
   return `${hour} ${incline(hour, 'час', 'часа', 'часов')}`;
 };
 
-let normalizeMinutes = function(date) {
-  let minutes = date.getMinutes();
+let normalizeMinutes = function(time) {
+  let minutes = time.getMinutes();
   return `${minutes} ${incline(minutes, 'минута', 'минуты', 'минут')}`;
 };
 
-let normalizeSeconds = function(date) {
-  let seconds = date.getSeconds();
+let normalizeSeconds = function(time) {
+  let seconds = time.getSeconds();
   return `${seconds} ${incline(seconds, 'секунда', 'секунды', 'секунд')}`;
 };
 
-let str = `Cегодня ${normalizeWeekday(dateItems)}, ${normalizeYear(dateItems)}, ${normalizeHours(date)}, ${normalizeMinutes(date)}, ${normalizeSeconds(date)}`;
-console.log('str :>> ', str);
-
-//  б) '04.02.2020 - 21:05:33'
-console.log(`${date.toLocaleDateString('ru-RU')} - ${date.toLocaleTimeString('ru-RU')}`);
-
-// 2) Для вывода в формате (а) напишите функцию, которая будет менять склонение слов в зависимости от числа,
-// "час, часов, часа"
-
-// 3) Для вывода в формате (б) напишите функцию, которая будет добавлять 0 перед значениями которые состоят
-// из одной цифры (из 9:5:3  1.6.2019 сделает 09:05:03 01.06.2019)
-
-// 4) С помощью функции setInterval, реализуйте обновление даты и времени каждую секунду
-
-let showTime = function() {
-
+let printLongTime = function(){
+  return `Cегодня ${normalizeWeekday(getDate(getTime()))}, ${normalizeYear(getDate(getTime()))}, ${normalizeHours(getTime())}, ${normalizeMinutes(getTime())}, ${normalizeSeconds(getTime())}`;
 };
 
-// повторить с интервалом 2 секунды
-let timerId = setInterval(() => console.log(showTime()), 2000);
+let printShortTime = function(){
+  return `${getTime().toLocaleDateString('ru-RU')} - ${getTime().toLocaleTimeString('ru-RU')}`;
+};
 
-// остановить вывод через 5 секунд
-setTimeout(() => { clearInterval(timerId); console.log('stop'); }, 25000);
+let p1 = document.createElement('p');
+
+let showTimeLong = function(element) {
+  element.innerText = printLongTime();
+  document.body.append(element);
+};
+
+let showTimeShort = function(element) {
+  element.innerText = printShortTime();
+  document.body.append(element);
+};
+
+setInterval(() => showTimeLong(p1), 1000);
+
+let p2 = document.createElement('p');
+
+setInterval(() => showTimeShort(p2), 1000);
