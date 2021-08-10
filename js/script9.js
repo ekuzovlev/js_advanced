@@ -14,6 +14,14 @@ function incline (quantity, one, two, five) {
   }
 }
 
+function two2digits (digit){
+  if (digit.toString().length < 2){
+    return '0' + digit;
+  } else {
+    return digit;
+  }
+}
+
 let getTime = function() {
   let date = new Date();
   return date;
@@ -33,23 +41,24 @@ let normalizeWeekday = function(dateItems){
 
 // Получаем день и год
 let normalizeYear = function(dateItems){
-  let year = dateItems[1];
-  return year.replace('г.', 'года');
+  let year = dateItems[1].split(' ');
+  let dayDigit = two2digits(year[0]);
+  return `${dayDigit} ${year[1]} ${year[2]} года`;
 };
 
 let normalizeHours = function(time) {
   let hour = time.getHours();
-  return `${hour} ${incline(hour, 'час', 'часа', 'часов')}`;
+  return `${two2digits(hour)} ${incline(hour, 'час', 'часа', 'часов')}`;
 };
 
 let normalizeMinutes = function(time) {
   let minutes = time.getMinutes();
-  return `${minutes} ${incline(minutes, 'минута', 'минуты', 'минут')}`;
+  return `${two2digits(minutes)} ${incline(minutes, 'минута', 'минуты', 'минут')}`;
 };
 
 let normalizeSeconds = function(time) {
   let seconds = time.getSeconds();
-  return `${seconds} ${incline(seconds, 'секунда', 'секунды', 'секунд')}`;
+  return `${two2digits(seconds)} ${incline(seconds, 'секунда', 'секунды', 'секунд')}`;
 };
 
 let printLongTime = function(){
